@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking - Best Electric Guide</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/tracking.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</head>
+<body class="dashboard-page">
+    <header class="dashboard-header">
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/funnels">Funnels</a></li>
+                <li><a href="/products">Multi Products</a></li>
+                <li><a href="/monoproducts">Mono Products</a></li>
+                <li><a href="/rules">Rules</a></li>
+                <li><a href="/design">Design</a></li>
+                <li><a href="/tracking" class="active">Tracking</a></li>
+                <li><a href="/api">API</a></li>
+                <li><a href="/sync">Sync</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><button id="logout-btn" class="btn-danger">Logout</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <h1>Tracking Settings</h1>
+        
+        
+        <form id="tracking-form" class="tracking-form">
+
+            <div class="form-group">
+                <label for="funnel-select">Select Funnel:</label>
+                <select id="funnel-select" class="form-control">
+                    <option value="">Select the funnel</option>
+                    <!-- Les options de funnel seront ajoutées dynamiquement ici -->
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="google-tag-manager">Google Tag Manager ID:</label>
+                <input type="text" id="google-tag-manager" name="googleTagManager" class="form-control" placeholder="GTM-XXXXXXX">
+            </div>
+
+            <div class="form-group">
+                <label for="google-ads-id">Google Ads ID:</label>
+                <input type="text" id="google-ads-id" name="googleAdsId" class="form-control" placeholder="AW-XXXXXXXXXX">
+            </div>
+
+            <div class="form-group">
+                <label for="google-ads-conversion-label">Google Ads Conversion Label:</label>
+                <input type="text" id="google-ads-conversion-label" name="googleAdsConversionLabel" class="form-control" placeholder="XXXXXXXXXXXXXXXXXXX">
+            </div>
+
+            <div class="form-group">
+                <label for="amazon-affiliate-tag">Amazon Affiliate Tag:</label>
+                <input type="text" id="amazon-affiliate-tag" name="amazonAffiliateTag" class="form-control">
+            </div>
+
+            <button type="submit" class="btn-primary">Save Tracking Settings</button>
+        </form>
+    </main>
+
+    <div id="loader" class="loader"></div>
+    <script src="js/tracking.js"></script>
+    <script src="js/logout.js"></script>
+    <script>
+        (function() {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            window.location.href = '/login';
+          }
+        })();
+      </script>
+</body>
+</html>

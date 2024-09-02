@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products Management - Best Electric Guide</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</head>
+<body class="dashboard-page">
+    <header class="dashboard-header">
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/funnels">Funnels</a></li>
+                <li><a href="/products" class="active">Multi Products</a></li>
+                <li><a href="/monoproducts">Mono Products</a></li>
+                <li><a href="/rules">Rules</a></li>
+                <li><a href="/design">Design</a></li>
+                <li><a href="/tracking">Tracking</a></li>
+                <li><a href="/api">API</a></li>
+                <li><a href="/sync">Sync</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><button id="logout-btn" class="btn-danger">Logout</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <h2>Add Multi Product</h2>
+        <form id="product-form" class="product-form" enctype="multipart/form-data">
+            <div class="form-row">
+                <input type="text" id="asin" name="asin" placeholder="ASIN" required>
+                <input type="text" id="brand" name="brand" placeholder="Brand" required>
+                <input type="text" id="name" name="name" placeholder="Product Name" required>
+            </div>
+            <div class="form-row">
+                <input type="file" id="productImage" name="productImage" accept="image/*" required>
+                <input type="number" id="score" name="score" placeholder="Score" required step="0.1" min="0" max="10">
+                <input type="number" id="rank" name="rank" placeholder="Rank" required min="1">
+            </div>
+            <div class="form-row">
+              <select id="marketplace" name="marketplace" required>
+                <option value="">Select Marketplace</option>
+                <option value="US">United States</option>
+                <option value="UK">United Kingdom</option>
+                <option value="FR">France</option>
+                <option value="DE">Germany</option>
+            </select>
+            <input type="text" id="buttonText" name="buttonText" placeholder="Button Text" value="View on Amazon">
+            <input type="color" id="buttonColor" name="buttonColor" value="#8ac832">
+            </div>
+            <button type="submit" class="btn-primary">Add product</button>
+        </form>
+
+       
+
+        <table id="products-table">
+            <thead>
+                <tr>
+                    <th>ASIN</th>
+                    <th>Brand</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                    <th>Rank</th>
+                    <th>Marketplace</th>
+                    <th>Activation</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Products will be inserted here -->
+            </tbody>
+        </table>
+    </main>
+
+    <div id="loader" class="loader"></div>
+    <script src="js/products.js"></script>
+    <script src="js/logout.js"></script>
+    <script>
+        (function() {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            window.location.href = '/login';
+          }
+        })();
+      </script>
+</body>
+</html>

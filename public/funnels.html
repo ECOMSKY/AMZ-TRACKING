@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funnels Management - Amazon Tracking SAAS</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/funnels.css">
+</head>
+<body class="dashboard-page">
+    <header class="dashboard-header">
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/funnels" class="active">Funnels</a></li>
+                <li><a href="/products">Multi Products</a></li>
+                <li><a href="/monoproducts">Mono Products</a></li>
+                <li><a href="/rules">Rules</a></li>
+                <li><a href="/design">Design</a></li>
+                <li><a href="/tracking">Tracking</a></li>
+                <li><a href="/api">API</a></li>
+                <li><a href="/sync">Sync</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><button id="logout-btn" class="btn-danger">Logout</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <h1>Funnels Management</h1>
+        
+        <section id="create-funnel" class="section">
+            <h2>Create New Funnel</h2>
+            <form id="create-funnel-form">
+                <div class="form-group">
+                    <label for="funnel-name">Funnel Name:</label>
+                    <input type="text" id="funnel-name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="template-type">Template Type:</label>
+                    <select name="templateType" id="template-type">
+                        <option value="Multi Product">Multi Product</option>
+                        <option value="Mono Product">Mono Product</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="custom-domain">Custom Domain:</label>
+                    <input type="text" id="custom-domain" name="customDomain">
+                    <a href="/dns-instructions.html" target="_blank">How to configure?</a>
+                </div>
+                <button type="submit" class="btn-primary">Create Funnel</button>
+            </form>
+        </section>
+
+        <section id="funnel-list" class="section">
+            <h2>Funnels</h2>
+            <table id="funnels-table">
+                <thead>
+                    <tr>
+                        <th>Funnel Name</th>
+                        <th>Template Type</th>
+                        <th>Custom Domain</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+    </main>
+    
+
+    <div id="product-selection-modal" class="modal">
+        <div class="modal-content">
+            <div class="table-container">
+                <table id="products-table">
+            <h2>Select Products for Funnel</h2>
+            <div class="search-container">
+                <input type="text" id="product-search" placeholder="Rechercher un produit...">
+            </div>
+            <div id="product-list"></div>
+        </table>
+    </div>
+            <button id="save-products" class="btn-primary">Save Products</button>
+            <button id="close-modal" class="btn-secondary">Close</button>
+        </div>
+    </div>
+
+    <div id="loader" class="loader"></div>
+    <script src="js/funnels.js"></script>
+</body>
+</html>

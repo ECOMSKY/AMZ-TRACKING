@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Amazon Tracking SAAS</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body class="dashboard-page">
+    <header class="dashboard-header">
+        <nav>
+            <ul class="nav-links">
+                <li><h1 class="app-title">Amazon Tracking SAAS</h1></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <div class="dashboard-container" role="main">
+            <div class="login-form">
+                <h2>Login</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Sign In</button>
+                        <button type="button" id="signup-btn" class="btn-secondary">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+            </form>
+        </div>
+    </main>
+    <div id="error-message" style="color: red;"></div>
+    <script src="js/login.js"></script>
+    
+</body>
+</html>

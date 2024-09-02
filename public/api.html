@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Settings - Best Electric Guide</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/api.css">
+</head>
+<body class="dashboard-page">
+    <header class="dashboard-header">
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/funnels">Funnels</a></li>
+                <li><a href="/products">Multi Products</a></li>
+                <li><a href="/monoproducts">Mono Products</a></li>
+                <li><a href="/rules">Rules</a></li>
+                <li><a href="/design">Design</a></li>
+                <li><a href="/tracking">Tracking</a></li>
+                <li><a href="/api" class="active">API</a></li>
+                <li><a href="/sync">Sync</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><button id="logout-btn" class="btn-danger">Logout</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <h1>API Settings</h1>
+        <form id="api-form" class="api-form">
+            <div class="form-group">
+                <label for="amazon-access-key">Amazon Access Key:</label>
+                <input type="text" id="amazon-access-key" name="amazonAccessKey" required>
+            </div>
+            <div class="form-group">
+                <label for="amazon-secret-key">Amazon Secret Key:</label>
+                <input type="password" id="amazon-secret-key" name="amazonSecretKey" required>
+            </div>
+            <div class="form-group">
+                <label for="google-ads-client-id">Google Ads Client ID:</label>
+                <input type="text" id="google-ads-client-id" name="googleAdsClientId" required>
+            </div>
+            <div class="form-group">
+                <label for="google-ads-client-secret">Google Ads Client Secret:</label>
+                <input type="password" id="google-ads-client-secret" name="googleAdsClientSecret" required>
+            </div>
+            <div class="form-group">
+                <label for="google-ads-developer-token">Google Ads Developer Token:</label>
+                <input type="text" id="google-ads-developer-token" name="googleAdsDeveloperToken" required>
+            </div>
+            <div class="form-group">
+                <label for="google-ads-refresh-token">Google Ads Refresh Token:</label>
+                <input type="text" id="google-ads-refresh-token" name="googleAdsRefreshToken" required>
+            </div>
+            <button type="submit" class="btn-primary">Save API Settings</button>
+        </form>
+    </main>
+
+    <div id="loader" class="loader"></div>
+    <script src="js/api.js"></script>
+    <script src="js/logout.js"></script>
+    <script>
+        (function() {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            window.location.href = '/login';
+          }
+        })();
+      </script>
+</body>
+</html>

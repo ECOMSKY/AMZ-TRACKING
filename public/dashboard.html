@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Best Electric Guide</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</head>
+<body>
+    <header class="dashboard-header">
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/dashboard" class="active">Dashboard</a></li>
+                <li><a href="/funnels">Funnels</a></li>
+                <li><a href="/products">Multi Products</a></li>
+                <li><a href="/monoproducts">Mono Products</a></li>
+                <li><a href="/rules">Rules</a></li>
+                <li><a href="/design">Design</a></li>
+                <li><a href="/tracking">Tracking</a></li>
+                <li><a href="/api">API</a></li>
+                <li><a href="/sync">Sync</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><button id="logout-btn" class="btn-danger">Logout</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <div class="section date-selector">
+            Start Date: <input type="date" id="start-date">
+            End Date: <input type="date" id="end-date">
+            <button id="update-data-btn" class="update-button">Update Data</button>
+        </div>
+
+        <section class="stats-section">
+            <h2>Summary Statistics</h2>
+            <div id="summary-stats-container" class="summary-stats">
+                <!-- Summary stats will be inserted here -->
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <h2>Statistics by ASIN</h2>
+            <table id="asin-table">
+                <thead>
+                    <tr>
+                      <th>ASIN</th>
+                      <th class="sortable" data-sort="clicks">Clicks <span class="sort-indicator"></span></th>
+                      <th class="sortable" data-sort="conversions">Conversions <span class="sort-indicator"></span></th>
+                      <th class="sortable" data-sort="revenue">Revenue <span class="sort-indicator"></span></th>
+                    </tr>
+                  </thead>
+                <tbody>
+                    <!-- ASIN stats will be inserted here -->
+                </tbody>
+            </table>
+            <div class="pagination">
+                <button id="asin-prev-page">Previous</button>
+                <span id="asin-page-info">Page 1 of 1</span>
+                <button id="asin-next-page">Next</button>
+              </div>
+        </section>
+
+        <section class="stats-section">
+            <h2>Daily Statistics</h2>
+            <table id="daily-table">
+                <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th class="sortable" data-sort="clicks">Clicks <span class="sort-indicator"></span></th>
+                      <th class="sortable" data-sort="conversions">Conversions <span class="sort-indicator"></span></th>
+                      <th class="sortable" data-sort="revenue">Revenue <span class="sort-indicator"></span></th>
+                    </tr>
+                  </thead>
+                <tbody>
+                    <!-- Daily stats will be inserted here -->
+                </tbody>
+            </table>
+            <div class="pagination">
+                <button id="daily-prev-page">Previous</button>
+                <span id="daily-page-info">Page 1 of 1</span>
+                <button id="daily-next-page">Next</button>
+              </div>
+        </section>
+        <div class="section stats-section">
+            <h2>Funnels Statistics</h2>
+            <table id="funnels-stats-table">
+                <thead>
+                    <tr>
+                        <th>Funnel Name</th>
+                        <th>Clicks</th>
+                        <th>Conversions</th>
+                        <th>Revenue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Les données seront insérées ici dynamiquement -->
+                </tbody>
+            </table>
+            <div class="pagination">
+                <button id="funnels-prev-page">Previous</button>
+                <span id="funnels-page-info">Page 1 of 1</span>
+                <button id="funnels-next-page">Next</button>
+            </div>
+        </div>
+
+        <section class="stats-section">
+            <h2>Click Details</h2>
+            <table id="click-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>ASIN</th>
+                        <th>Timestamp</th>
+                        <th>GCLID</th>
+                        <th>Converted</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Click details will be inserted here -->
+                </tbody>
+            </table>
+            <div class="pagination">
+                <button id="prev-page">Previous</button>
+                <span id="page-info">Page 1 of 1</span>
+                <button id="next-page">Next</button>
+              </div>            
+            <button id="export-csv-btn" class="export-button">Export to CSV</button>
+        </section>
+        
+    </main>
+
+    <script src="js/dashboard.js"></script>
+    <script src="js/logout.js"></script>
+    <script>
+        (function() {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            window.location.href = '/login';
+          }
+        })();
+      </script>
+    <div id="loader" class="loader"></div>
+</body>
+</html>

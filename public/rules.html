@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rules Management - Amazon Tracking SAAS</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/rules.css">
+</head>
+<body class="dashboard-page">
+    <header class="dashboard-header">
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/funnels">Funnels</a></li>
+                <li><a href="/products">Multi Products</a></li>
+                <li><a href="/monoproducts">Mono Products</a></li>
+                <li><a href="/rules">Rules</a></li>
+                <li><a href="/design">Design</a></li>
+                <li><a href="/tracking">Tracking</a></li>
+                <li><a href="/api">API</a></li>
+                <li><a href="/sync">Sync</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><button id="logout-btn" class="btn-danger">Logout</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <h1>Rules Management</h1>
+        
+        <section id="rule-form" class="section rule-form">
+            <h2>Create/Edit Rule</h2>
+            <form id="rule-create-edit-form">
+                <div class="form-group">
+                    <label for="rule-name">Rule Name:</label>
+                    <input type="text" id="rule-name" name="name" required class="form-control">
+                    <label for="funnel-select">Select Funnel:</label>
+    <select id="funnel-select" name="funnelId" class="form-control">
+        <option value="">All Funnels</option>
+        <!-- Les options de funnel seront ajoutées dynamiquement ici -->
+    </select>
+                </div>
+                <div class="form-group">
+                    <label for="rule-action">Action:</label>
+                    <select id="rule-action" name="action" required class="form-control">
+                        <option value="disable">Disable Product</option>
+                        <option value="increase_ranking">Increase Ranking</option>
+                        <option value="decrease_ranking">Decrease Ranking</option>
+                        <option value="sort_ascending">Ascending sort</option>
+                        <option value="sort_descending">Descending sort</option>
+                    </select>
+                </div>
+                <div id="ranking-value-group" class="form-group" style="display: none;">
+                    <label for="ranking-value">Ranking Change Value:</label>
+                    <input type="number" id="ranking-value" name="rankingValue" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="date-range">Date Range:</label>
+                    <select id="date-range" name="dateRange" class="form-control">
+                        <option value="custom">Custom Date</option>
+                        <option value="today">Today</option>
+                        <option value="yesterday">Yesterday</option>
+                        <option value="last7days">Last 7 Days</option>
+                        <option value="last30days">Last 30 Days</option>
+                    </select>
+                </div>
+                <div id="custom-date-range" class="form-group" style="display: none;">
+                    <label for="start-date">Start Date:</label>
+                    <input type="date" id="start-date" name="startDate" class="form-control">
+                    <label for="end-date">End Date:</label>
+                    <input type="date" id="end-date" name="endDate" class="form-control">
+                </div>
+                <div id="conditions-container">
+                    <!-- Les conditions seront ajoutées ici dynamiquement -->
+                </div>
+                <button type="button" id="add-condition" class="btn btn-secondary">Add Condition</button>
+                <div class="apply-immediately-container">
+                    <input type="checkbox" id="applyImmediately" name="applyImmediately">
+                    <label for="applyImmediately">Apply this rule immediately to all existing products</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Rule</button>
+            </form>
+        </section>
+
+        <section id="rules-list" class="rules-list">
+            <h2>Active Rules</h2>
+            <table id="active-rules-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Action</th>
+                        <th>Funnels</th>
+                        <th>Conditions</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <h2>Inactive Rules</h2>
+            <table id="inactive-rules-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Action</th>
+                        <th>Funnels</th>
+                        <th>Conditions</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="js/rules.js"></script>
+</body>
+</html>

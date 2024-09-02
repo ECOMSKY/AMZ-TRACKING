@@ -1,0 +1,19 @@
+/* Styles spécifiques à la version mobile */
+@media screen and (max-width: 767px) {
+    .product-container {
+        flex-direction: column;
+    }
+
+    .product-image, .product-info {
+        width: 100%;
+    }
+
+    main {
+        padding: 20px;
+    }
+
+    .cta-button {
+        width: 100%;
+        margin: 0;
+    }
+}

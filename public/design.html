@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design - Best Electric Guide</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/design.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</head>
+<body class="dashboard-page">
+    <header class="dashboard-header">
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/funnels">Funnels</a></li>
+                <li><a href="/products">Multi Products</a></li>
+                <li><a href="/monoproducts">Mono Products</a></li>
+                <li><a href="/rules">Rules</a></li>
+                <li><a href="/design" class="active">Design</a></li>
+                <li><a href="/tracking">Tracking</a></li>
+                <li><a href="/api">API</a></li>
+                <li><a href="/sync">Sync</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><button id="logout-btn" class="btn-danger">Logout</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <h1>Design Settings</h1>
+        
+        <form id="design-form" class="design-form">
+            <div class="form-group">
+                <label for="funnel-select">Select Funnel:</label>
+                <select id="funnel-select" name="funnelId" class="form-control">
+                    <option value="">Select a funnel</option>
+                    <!-- Les options seront remplies dynamiquement via JavaScript -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="logo-type">Logo Type:</label>
+                <select id="logo-type" name="logoType" class="form-control">
+                    <option value="text">Text</option>
+                    <option value="image">Image</option>
+                </select>
+            </div>
+            
+            <div id="logo-text-group" class="form-group">
+                <label for="logo-text">Logo Text:</label>
+                <input type="text" id="logo-text" name="logoText" class="form-control">
+            </div>
+            
+            <div id="logo-image-group" class="form-group" style="display: none;">
+                <label for="logo-image">Logo Image URL:</label>
+                <input type="text" id="logo-image" name="logoImage" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="header-color">Header Color:</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="header-color" name="headerColor" class="color-picker">
+                    <input type="text" id="header-color-text" class="form-control color-text">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="footer-color">Footer Color:</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="footer-color" name="footerColor" class="color-picker">
+                    <input type="text" id="footer-color-text" class="form-control color-text">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="footer-text">Footer Text:</label>
+                <input type="text" id="footer-text" name="footerText" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="logo-footer-color">Logo & Footer Text Color:</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="logo-footer-color" name="logoFooterColor" class="color-picker">
+                    <input type="text" id="logo-footer-color-text" class="form-control color-text">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary">Save Design Settings</button>
+        </form>
+    </main>
+
+    <div id="loader" class="loader"></div>
+    <script src="js/design.js"></script>
+    <script src="js/logout.js"></script>
+    <script>
+        (function() {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            window.location.href = '/login';
+          }
+        })();
+      </script>
+</body>
+</html>

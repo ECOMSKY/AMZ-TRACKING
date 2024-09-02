@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync Settings - Amazon Tracking SAAS</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/sync.css">
+</head>
+<body class="dashboard-page">
+    <header class="dashboard-header">
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/funnels">Funnels</a></li>
+                <li><a href="/products">Multi Products</a></li>
+                <li><a href="/monoproducts">Mono Products</a></li>
+                <li><a href="/rules">Rules</a></li>
+                <li><a href="/design">Design</a></li>
+                <li><a href="/tracking">Tracking</a></li>
+                <li><a href="/api">API</a></li>
+                <li><a href="/sync" class="active">Sync</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><button id="logout-btn" class="btn-danger">Logout</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <h1>Sync Settings</h1>
+        
+        <section class="sync-section">
+            <h2>Manual Sync</h2>
+            <button id="manual-sync" class="btn-primary">Sync Conversions Now</button>
+            <div id="sync-status"></div>
+        </section>
+
+        <section class="sync-section">
+            <h2>Automatic Sync</h2>
+            <form id="auto-sync-form">
+                <div class="form-group">
+                    <label for="sync-interval">Sync Interval (hours):</label>
+                    <input type="number" id="sync-interval" name="syncInterval" min="1" max="24" required>
+                </div>
+                <button type="submit" class="btn-primary">Save Sync Settings</button>
+            </form>
+        </section>
+
+        <section class="sync-section">
+            <h2>Last Sync</h2>
+            <p id="last-sync-time">Never</p>
+        </section>
+    </main>
+
+    <div id="loader" class="loader"></div>
+    <script src="js/sync.js"></script>
+    <script src="js/logout.js"></script>
+    <script>
+        (function() {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            window.location.href = '/login';
+          }
+        })();
+      </script>
+</body>
+</html>

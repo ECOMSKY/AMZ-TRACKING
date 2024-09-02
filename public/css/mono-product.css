@@ -1,0 +1,173 @@
+/* Styles communs */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.logo {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Styles spécifiques à la version desktop */
+@media screen and (min-width: 768px) {
+    .product-container {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    .product-image, .product-info {
+        flex: 0 0 50%;
+    }
+
+    .cta-button {
+        margin: 0 20px; /* Ajout de marges latérales */
+    }
+}
+
+.product-image img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.rating {
+    margin-bottom: 20px;
+}
+
+.stars {
+    color: #FFD700;
+    font-size: 20px;
+}
+
+.reviews {
+    color: #777;
+    margin-left: 10px;
+}
+
+.features {
+    list-style-type: none;
+    padding: 0;
+}
+
+.features li {
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+}
+
+.features li::before {
+    content: '✓';
+    color: #4CAF50;
+    position: absolute;
+    left: 0;
+}
+
+.product-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #3498db;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
+.price {
+    font-size: 36px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.cta-button {
+    display: block; /* Changé de inline-block à block */
+    padding: 15px 30px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: background-color 0.3s, transform 0.2s;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: calc(100% - 30px); /* Ajusté pour avoir 15px de marge de chaque côté */
+    margin: 0 auto; /* Centrer le bouton */
+    box-sizing: border-box; /* Inclure padding et border dans la largeur */
+}
+
+/* Styles spécifiques pour mobile */
+@media screen and (max-width: 767px) {
+    .cta-button {
+        font-size: 18px;
+        padding: 12px 20px;
+    }
+
+    .price-section {
+        padding: 0 15px; /* Ajouter un padding au conteneur du bouton */
+    }
+}
+.price-section {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.cta-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.description, .characteristics {
+    background-color: #f9f9f9;
+    padding: 30px;
+    margin-bottom: 40px;
+}
+
+h2 {
+    font-size: 24px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.characteristics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.characteristic {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: transparent;
+}
+
+.label {
+    font-weight: bold;
+}

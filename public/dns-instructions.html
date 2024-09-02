@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS Configuration Instructions</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>How to Configure Your Custom Domain</h1>
+        <ol>
+            <li>Log in to your domain registrar's website.</li>
+            <li>Navigate to the DNS management section.</li>
+            <li>Add a new CNAME record with the following details:
+                <ul>
+                    <li>Name/Host: www</li>
+                    <li>Value/Points to: [Your App's Domain] (e.g., your-app.herokuapp.com)</li>
+                    <li>TTL: 3600 (or 1 hour)</li>
+                </ul>
+            </li>
+            <li>Save your changes.</li>
+            <li>Wait for DNS propagation (can take up to 48 hours).</li>
+        </ol>
+        <p>Once configured, your custom domain will point to your funnel landing page.</p>
+    </div>
+</body>
+</html>
