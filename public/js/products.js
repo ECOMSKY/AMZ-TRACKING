@@ -10,7 +10,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadProducts() {
-    fetch('/api/products')
+    fetch('/api/products',{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }})
         .then(response => response.json())
         .then(products => {
             const tableBody = document.querySelector('#products-table tbody');
@@ -24,6 +28,10 @@ function addProduct(formData) {
     formData.append('productType', 'multi'); // ou 'mono' selon le cas
     fetch('/api/products', {
         method: 'POST',
+        headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        },
         body: formData
     })
     .then(response => {
@@ -71,7 +79,8 @@ window.toggleActivation = function(id, currentStatus) {
     fetch(`/api/products/${id}/toggle-activation`, {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({ isActive: !currentStatus }),
     })
@@ -95,7 +104,11 @@ window.toggleActivation = function(id, currentStatus) {
 
 window.editProduct = function(id) {
     console.log("Editing product with id:", id);
-    fetch(`/api/products/${id}`)
+    fetch(`/api/products/${id}`,{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }})
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -129,7 +142,12 @@ window.editProduct = function(id) {
 
 window.deleteProduct = function(id) {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
-        fetch(`/api/products/${id}`, { method: 'DELETE' })
+        fetch(`/api/products/${id}`, { 
+            method: 'DELETE',
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        } })
             .then(response => {
                 if (response.ok) {
                     loadProducts();
@@ -146,6 +164,10 @@ window.deleteProduct = function(id) {
 function updateProduct(id, formData) {
     fetch(`/api/products/${id}`, {
         method: 'PUT',
+        headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        },
         body: formData
     })
     .then(response => response.json())

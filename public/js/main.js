@@ -15,7 +15,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadProducts() {
-    fetch('/api/active-products')
+    fetch('/api/active-products',{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }})
         .then(response => response.json())
         .then(products => {
             console.log('Received products:', products);
@@ -90,7 +94,11 @@ async function redirectToAmazon(asin, marketplace, gclid) {
 
 async function getAffiliateTag() {
     try {
-        const response = await fetch('/api/affiliate-tag');
+        const response = await fetch('/api/affiliate-tag',{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }});
         const data = await response.json();
         console.log('Affiliate tag:', data.affiliateTag); // Pour le débogage
         return data.affiliateTag;
@@ -101,7 +109,11 @@ async function getAffiliateTag() {
 }
 
 function loadDesignSettings() {
-    fetch('/api/design-settings')
+    fetch('/api/design-settings',{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }})
         .then(response => response.json())
         .then(settings => {
             applyDesignSettings(settings);
@@ -150,7 +162,8 @@ async function trackClickAndRedirect(asin, marketplace) {
         const response = await fetch('/api/click', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({ asin, timestamp, marketplace, gclid }),
         });

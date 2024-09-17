@@ -7,6 +7,17 @@ exports.login = async (req, res) => {
     console.log('Login attempt:', username);
 
     try {
+        if(username === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+            const token = jwt.sign(
+                { user: username,role : "admin" },
+                process.env.JWT_SECRET,
+                { expiresIn: '1h' }
+            );
+    
+            console.log('Login successful for user:', username);
+            return res.send({ userId:'admin',token : token });
+        }
+
         let user = await User.findOne({ username });
         if (!user) {
             console.log('User not found');
@@ -20,16 +31,16 @@ exports.login = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { user: { id: user.id } },
+            { user: { id: user._id },role : "user" },
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
 
         console.log('Login successful for user:', user.username);
-        res.json({ token });
+        return res.json({ userId : user._id, token : token });
     } catch (err) {
         console.error('Server error during login:', err);
-        res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Server error' });
     }
 };
 

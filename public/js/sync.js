@@ -18,7 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function loadSyncSettings() {
     console.log('Fetching sync settings...');
-    fetch('/api/sync-settings')
+    fetch('/api/sync-settings',{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }})
         .then(response => {
             console.log('Response status:', response.status);
             return response.json();
@@ -40,7 +44,8 @@ function saveSyncSettings() {
     fetch('/api/sync-settings', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({ syncInterval }),
     })
@@ -59,7 +64,12 @@ function syncConversions() {
     const syncStatus = document.getElementById('sync-status');
     syncStatus.textContent = 'Syncing...';
 
-    fetch('/api/sync-conversions', { method: 'POST' })
+    fetch('/api/sync-conversions', { 
+        method: 'POST',
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    } })
         .then(response => response.json())
         .then(result => {
             console.log('Sync result:', result);

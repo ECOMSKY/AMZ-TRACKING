@@ -20,7 +20,11 @@ document.addEventListener('DOMContentLoaded', function() {
     closeModalButton.addEventListener('click', () => modal.style.display = 'none');
 
     function loadFunnels() {
-        fetch('/api/funnels')
+        fetch('/api/funnels',{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }})
             .then(response => response.json())
             .then(funnels => {
                 renderFunnels(funnels);
@@ -32,13 +36,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!funnelData.templateType.includes('Product')) {
             funnelData.templateType = funnelData.templateType.charAt(0).toUpperCase() + funnelData.templateType.slice(1) + " Product";
         }
-        console.log('Creating funnel:', funnelData);
+        console.log('Creating funnel:', {...funnelData,userId : localStorage.getItem('userId')});
         fetch('/api/funnels', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(funnelData),
+            body: JSON.stringify({...funnelData,userId : localStorage.getItem('userId')}),
         })
         .then(response => {
             if (!response.ok) {
@@ -76,7 +81,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.deleteFunnel = function(funnelId) {
         if (confirm('Are you sure you want to delete this funnel?')) {
-            fetch(`/api/funnels/${funnelId}`, { method: 'DELETE' })
+            fetch(`/api/funnels/${funnelId}`, { 
+                method: 'DELETE',
+                headers: {
+                'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }})
                 .then(response => {
                     if (response.ok) {
                         loadFunnels();
@@ -95,15 +105,20 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     window.viewLandingPage = function(funnelId) {
-        fetch(`/api/funnels/${funnelId}`)
+        const userId = localStorage.getItem('userId')
+        fetch(`/api/funnels/${funnelId}`,{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }})
             .then(response => response.json())
             .then(funnel => {
                 console.log('Funnel data:', funnel);
                 let url;
                 if (funnel.templateType === 'Mono Product') {
-                    url = `/mono-product.html?id=${funnelId}`;
+                    url = `/mono-product.html?id=${funnelId}&userId=${userId}`;
                 } else {
-                    url = `/funnel-landing.html?id=${funnelId}`;
+                    url = `/funnel-landing.html?id=${funnelId}&userId=${userId}`;
                 }
                 console.log('Opening URL:', url);
                 window.open(url, '_blank');
@@ -116,19 +131,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function loadProductsForFunnel(funnelId) {
         console.log('Loading products for funnel:', funnelId);
-        fetch(`/api/funnels/${funnelId}`)
+        fetch(`/api/funnels/${funnelId}`,{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }})
             .then(res => res.json())
             .then(funnel => {
                 console.log('Funnel data:', funnel);
                 let productsPromise;
                 if (funnel.templateType === 'Mono Product') {
-                    productsPromise = fetch('/api/mono-products');
+                    productsPromise = fetch('/api/mono-products',{
+                        headers: {
+                        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    }});
                 } else {
-                    productsPromise = fetch('/api/products');
+                    productsPromise = fetch('/api/products',{
+                        headers: {
+                        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    }});
                 }
                 return Promise.all([
                     productsPromise.then(res => res.json()),
-                    fetch(`/api/funnels/${funnelId}/products`).then(res => res.json())
+                    fetch(`/api/funnels/${funnelId}/products`,{
+                        headers: {
+                        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    }}).then(res => res.json())
                 ]);
             })
             .then(([allProducts, funnelProducts]) => {
@@ -156,7 +187,8 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(`/api/funnels/${currentFunnelId}/products`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({ productIds: selectedProductIds }),
         })
@@ -207,7 +239,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function loadProducts() {
-        fetch('/api/active-products')
+        fetch('/api/active-products',{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }})
             .then(response => response.json())
             .then(products => {
                 const tableBody = document.querySelector('#products-table tbody');
@@ -230,7 +266,8 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('/api/save-funnel-products', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({ selectedProducts }),
         })
@@ -270,7 +307,8 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('/api/funnels', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(Object.fromEntries(formData)),
         })

@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const RuleSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'users', // assuming your users collection is named 'User'
+    required: true
+},
   name: {
     type: String,
     required: true,

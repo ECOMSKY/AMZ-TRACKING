@@ -1,5 +1,9 @@
 function loadFunnels() {
-    fetch('/api/funnels')
+    fetch('/api/funnels',{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }})
         .then(response => response.json())
         .then(funnels => {
             const funnelSelect = document.getElementById('funnel-select');
@@ -116,7 +120,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function loadRules() {
-        fetch('/api/rules')
+        fetch('/api/rules',{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }})
             .then(response => response.json())
             .then(rules => {
                 const activeRulesTable = document.querySelector('#active-rules-table tbody');
@@ -193,7 +201,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.deleteRule = function(ruleId) {
         if (confirm('Are you sure you want to delete this rule?')) {
-            fetch(`/api/rules/${ruleId}`, { method: 'DELETE' })
+            fetch(`/api/rules/${ruleId}`, { 
+                method: 'DELETE',
+                headers: {
+                'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }})
                 .then(response => {
                     if (response.ok) {
                         loadRules();
@@ -206,7 +219,12 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     window.toggleRule = function(ruleId) {
-        fetch(`/api/rules/${ruleId}/toggle`, { method: 'POST' })
+        fetch(`/api/rules/${ruleId}/toggle`, { 
+            method: 'POST',
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        } })
             .then(response => response.json())
             .then(updatedRule => {
                 loadRules(); // Recharge toutes les règles
@@ -218,7 +236,8 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('/api/rules', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(ruleData),
         })
@@ -285,7 +304,8 @@ function updateRule(ruleId) {
     fetch(`/api/rules/${ruleId}`, {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(ruleData),
     })
@@ -312,7 +332,11 @@ function getConditionsFromForm() {
 
 // À la fin du fichier rules.js
 window.editRule = function(ruleId) {
-    fetch(`/api/rules/${ruleId}`)
+    fetch(`/api/rules/${ruleId}`,{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }})
         .then(response => response.json())
         .then(rule => {
             document.getElementById('rule-name').value = rule.name;

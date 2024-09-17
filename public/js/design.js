@@ -31,7 +31,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function loadFunnels() {
-        fetch('/api/funnels')
+        fetch('/api/funnels',{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }})
             .then(response => response.json())
             .then(funnels => {
                 funnelSelect.innerHTML = '<option value="">Select a funnel</option>';
@@ -51,7 +55,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function loadDesignSettings(funnelId) {
-        fetch(`/api/design-settings/${funnelId}`)
+        fetch(`/api/design-settings/${funnelId}`,{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }})
             .then(response => response.json())
             .then(settings => {
                 console.log('Received settings:', settings); // Ajoutez cette ligne
@@ -110,7 +118,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
         fetch(`/api/design-settings/${funnelId}`, {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: {
+                'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
         })
         .then(response => response.json())
         .then(result => {

@@ -4,7 +4,7 @@ const MonoProduct = require('../models/MonoProduct');
 
 exports.getAllFunnels = async (req, res) => {
     try {
-        const funnels = await Funnel.find();
+        const funnels = await Funnel.find({userId : req.user.id});
         res.json(funnels);
     } catch (error) {
         res.status(500).json({ message: error.message });

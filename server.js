@@ -75,7 +75,7 @@ pages.forEach(page => {
 // Start server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
-  setupSyncCronJob().catch(console.error);
+  // setupSyncCronJob().catch(console.error);
 });
 
 

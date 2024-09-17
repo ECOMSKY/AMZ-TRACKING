@@ -15,8 +15,16 @@ document.addEventListener('DOMContentLoaded', function() {
 function loadMonoProductData(funnelId) {
     console.log('Starting to load mono product data');
     Promise.all([
-        fetch(`/api/funnels/${funnelId}/products`).then(response => response.json()),
-        fetch(`/api/tracking-settings/${funnelId}`).then(response => response.json())
+        fetch(`/api/funnels/${funnelId}/products`,{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }}).then(response => response.json()),
+        fetch(`/api/tracking-settings/${funnelId}`,{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }}).then(response => response.json())
     ])
     .then(([products, trackingSettings]) => {
         console.log('Fetched products:', products);
@@ -98,11 +106,12 @@ function generateAmazonUrl(product) {
     const gclid = getGclid();
     const timestamp = Date.now();
     const funnelId = getFunnelIdFromUrl(); // Assurez-vous d'avoir cette fonction dans ce fichier
-
+    const userId = getUserIdFromUrl() ;
     return fetch('/api/generate-amazon-url', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            // 'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             asin: product.asin,
@@ -117,9 +126,11 @@ function generateAmazonUrl(product) {
         return fetch('/api/click', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                // 'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                userId : userId,
                 asin: product.asin,
                 timestamp: timestamp,
                 gclid: gclid,
@@ -138,6 +149,11 @@ function generateAmazonUrl(product) {
 function getFunnelIdFromUrl() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('id');
+}
+// Ajoutez cette fonction si elle n'existe pas déjà
+function getUserIdFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('userId');
 }
 
 function applyTrackingScripts(trackingSettings) {

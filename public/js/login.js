@@ -33,6 +33,7 @@ function login(username, password) {
     .then(data => {
         console.log('Login successful, received data:', data);
         if (data.token) {
+            localStorage.setItem('userId',data.userId)
             localStorage.setItem('token', data.token);
             window.location.href = '/dashboard';
         } else {

@@ -14,7 +14,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadFunnels() {
-    fetch('/api/funnels')
+    fetch('/api/funnels',{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }})
         .then(response => response.json())
         .then(funnels => {
             const funnelSelect = document.getElementById('funnel-select');
@@ -33,7 +37,11 @@ function loadTrackingSettings() {
     const url = funnelId ? `/api/tracking-settings/${funnelId}` : '/api/tracking-settings';
 
     showLoader();
-    fetch(url)
+    fetch(url,{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }})
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -65,7 +73,8 @@ function saveTrackingSettings() {
     fetch(url, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(settings),
     })

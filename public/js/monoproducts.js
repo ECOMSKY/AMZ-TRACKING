@@ -16,7 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadProducts() {
-  fetch('/api/mono-products')
+  fetch('/api/mono-products',{
+    headers: {
+    'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+    'Content-Type': 'application/json'
+}})
       .then(response => response.json())
       .then(products => {
           const tableBody = document.querySelector('#mono-products-table tbody');
@@ -47,6 +51,10 @@ function addMonoProduct(formData) {
 
   fetch('/api/mono-products', {
     method: 'POST',
+    headers: {
+      'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json'
+  },
     body: formData
   })
   .then(response => {
@@ -108,7 +116,11 @@ function addCharacteristic(name = '', value = '') {
 }
 
 window.editProduct = function(id) {
-  fetch(`/api/mono-products/${id}`)
+  fetch(`/api/mono-products/${id}`,{
+    headers: {
+    'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+    'Content-Type': 'application/json'
+}})
       .then(response => response.json())
       .then(product => {
           fillFormWithProductData(product);
@@ -172,8 +184,9 @@ function updateMonoProduct(id) {
   fetch(`/api/mono-products/${id}`, {
       method: 'PUT',
       headers: {
-          'Content-Type': 'application/json',
-      },
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    },
       body: JSON.stringify(productData),
   })
   .then(response => {
@@ -204,7 +217,12 @@ function resetForm() {
 
 window.deleteProduct = function(id) {
   if (confirm('Are you sure you want to delete this product?')) {
-      fetch(`/api/mono-products/${id}`, { method: 'DELETE' })
+      fetch(`/api/mono-products/${id}`, { 
+        method: 'DELETE',
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    } })
           .then(response => response.json())
           .then(() => {
               loadProducts();

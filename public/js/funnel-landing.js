@@ -12,9 +12,21 @@ document.addEventListener('DOMContentLoaded', function() {
 function loadFunnelData(funnelId) {
     console.log('Loading funnel data for ID:', funnelId);
     Promise.all([
-        fetch(`/api/funnels/${funnelId}/products`).then(response => response.json()),
-        fetch(`/api/design-settings/${funnelId}`).then(response => response.json()),
-        fetch(`/api/tracking-settings/${funnelId}`).then(response => response.json())
+        fetch(`/api/funnels/${funnelId}/products`,{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }}).then(response => response.json()),
+        fetch(`/api/design-settings/${funnelId}`,{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }}).then(response => response.json()),
+        fetch(`/api/tracking-settings/${funnelId}`,{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }}).then(response => response.json())
     ])
     .then(([products, designSettings, trackingSettings]) => {
         console.log('Products:', products);
@@ -185,7 +197,11 @@ async function redirectToAmazon(asin, marketplace) {
     }
 
     try {
-        const clickResponse = await fetch('/api/click', {
+        const clickResponse = await fetch('/api/click',{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }}, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -216,7 +232,11 @@ async function redirectToAmazon(asin, marketplace) {
 
 async function getAffiliateTag() {
     try {
-        const response = await fetch('/api/affiliate-tag');
+        const response = await fetch('/api/affiliate-tag',{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }});
         const data = await response.json();
         return data.affiliateTag;
     } catch (error) {
@@ -241,7 +261,11 @@ function getGclid() {
 
 async function loadTrackingScripts(funnelId) {
     try {
-        const response = await fetch(`/api/tracking-settings/${funnelId}`);
+        const response = await fetch(`/api/tracking-settings/${funnelId}`,{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }});
         const trackingSettings = await response.json();
 
         if (trackingSettings.googleTagManager) {

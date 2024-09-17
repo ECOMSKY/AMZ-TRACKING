@@ -119,23 +119,39 @@ function fetchDashboardData() {
 }
 
 async function fetchSummaryStats(startDate, endDate) {
-    const response = await fetch(`/api/click-summary?startDate=${startDate}&endDate=${endDate}`);
+    const response = await fetch(`/api/click-summary?startDate=${startDate}&endDate=${endDate}`,{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }});
     return response.json();
 }
 
 async function fetchAsinStats(startDate, endDate, page, limit) {
-    const response = await fetch(`/api/asin-stats?startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${limit}`);
+    const response = await fetch(`/api/asin-stats?startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${limit}`,{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }});
     return response.json();
 }
 
 async function fetchDailyStats(startDate, endDate, page, limit) {
-    const response = await fetch(`/api/daily-stats?startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${limit}`);
+    const response = await fetch(`/api/daily-stats?startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${limit}`,{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }});
     return response.json();
 }
 
 async function fetchClickDetails(startDate, endDate, page, limit) {
     console.log('Fetching click details for:', { startDate, endDate, page, limit });
-    const response = await fetch(`/api/clicks?startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${limit}`);
+    const response = await fetch(`/api/clicks?startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${limit}`,{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }});
     if (!response.ok) {
         throw new Error('Failed to fetch click details');
     }
@@ -346,7 +362,11 @@ function loadFunnelsStats() {
     const endDate = document.getElementById('end-date').value;
     
     showLoader();
-    fetch(`/api/funnels-stats?startDate=${startDate}&endDate=${endDate}&page=${funnelsCurrentPage}&limit=${itemsPerPage}`)
+    fetch(`/api/funnels-stats?startDate=${startDate}&endDate=${endDate}&page=${funnelsCurrentPage}&limit=${itemsPerPage}`,{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }})
         .then(response => response.json())
         .then(data => {
             updateFunnelsStatsTable(data.stats);
@@ -374,7 +394,11 @@ function updateFunnelsStatsTable(stats) {
 
 // Ajoutez cette fonction
 function fetchFunnelsStats(startDate, endDate, page, limit) {
-    return fetch(`/api/funnels-stats?startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${limit}`)
+    return fetch(`/api/funnels-stats?startDate=${startDate}&endDate=${endDate}&page=${page}&limit=${limit}`,{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }})
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to fetch funnels stats');

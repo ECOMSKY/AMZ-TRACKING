@@ -3,7 +3,7 @@ const { Parser } = require('json2csv');
 
 exports.trackClick = async (req, res) => {
     try {
-        const { asin, timestamp, gclid, marketplace, funnelId } = req.body;
+        const { asin, timestamp, gclid, marketplace, funnelId,userId } = req.body;
         console.log('Received click data:', { asin, timestamp, gclid, marketplace, funnelId });
         
         // Vérifiez si le funnelId est fourni
@@ -12,6 +12,7 @@ exports.trackClick = async (req, res) => {
         }
 
         const clickStat = new ClickStat({
+            userId : userId,
             asin,
             timestamp: new Date(timestamp),
             gclid: gclid || 'N/A',
@@ -36,24 +37,35 @@ exports.getClickStats = async (req, res) => {
         const skip = (page - 1) * limit;
 
         console.log('Fetching click stats for:', { startDate, endDate, page, limit });
-        
-        const query = {
-            timestamp: { 
-                $gte: new Date(startDate), 
-                $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999))
-            }
-        };
+        let query = {}
+        if(req.user.role === "admin") {
+            query =   {
+                timestamp: { 
+                    $gte: new Date(startDate), 
+                    $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999))
+                }
+            };
+        } else {
+            query = {
+                userId : req.user.id,
+                timestamp: { 
+                    $gte: new Date(startDate), 
+                    $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999))
+                }
+            };
+        }
+      
 
         const [clicks, totalClicks] = await Promise.all([
             ClickStat.find(query)
                 .sort({ timestamp: -1 })
                 .skip(skip)
                 .limit(parseInt(limit)),
-            ClickStat.countDocuments(query)
+            ClickStat.find({ userId : req.user.id}).countDocuments()
         ]);
 
-        console.log('Click stats count:', clicks.length);
-        console.log('Total clicks:', totalClicks);
+        // console.log('Click stats count:', clicks.length);
+        // console.log('Total clicks:', totalClicks);
 
         res.json({
             clicks,
@@ -72,13 +84,28 @@ exports.getClickStatsByAsin = async (req, res) => {
         const { startDate, endDate, page = 1, limit = 10 } = req.query;
         const skip = (page - 1) * limit;
 
-        const query = {
-            timestamp: { 
-                $gte: new Date(startDate), 
-                $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999))
-            }
-        };
+        let query = {};
 
+        if(req.user.role === "admin") {
+            query = {
+                timestamp: { 
+                    $gte: new Date(startDate), 
+                    $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999))
+                }
+            }
+        } else {
+            query = {
+                $or: [
+                    { userId: req.user.id },
+                ],
+                timestamp: { 
+                    $gte: new Date(startDate), 
+                    $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999))
+                }
+            }
+        }
+
+        const isStats = await ClickStat.find(query);
         const [stats, totalItems] = await Promise.all([
             ClickStat.aggregate([
                 { $match: query },
@@ -121,32 +148,60 @@ exports.getClickStatsByAsin = async (req, res) => {
 exports.getClickSummary = async (req, res) => {
     try {
         const { startDate, endDate } = req.query;
-        const query = startDate && endDate ? {
-            timestamp: { 
-                $gte: new Date(startDate + 'T00:00:00.000Z'), 
-                $lte: new Date(endDate + 'T23:59:59.999Z')
-            }
-        } : {};
-        const summary = await ClickStat.aggregate([
-            { $match: query },
-            {
-                $group: {
-                    _id: null,
-                    totalClicks: { $sum: 1 },
-                    totalConversions: { $sum: { $cond: ['$converted', 1, 0] } },
-                    totalRevenue: { $sum: '$revenue' }
-                }
-            },
-            {
-                $project: {
-                    _id: 0,
-                    totalClicks: 1,
-                    totalConversions: 1,
-                    totalRevenue: 1
+        let query = {};
+
+        if(req.user.role === "admin") {
+            query = {
+                timestamp: { 
+                    $gte: new Date(startDate), 
+                    $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999))
                 }
             }
-        ]);
-        res.json(summary[0] || { totalClicks: 0, totalConversions: 0, totalRevenue: 0 });
+        } else {
+            query = {
+                $or: [
+                    { userId: req.user.id },
+                ],
+                timestamp: { 
+                    $gte: new Date(startDate), 
+                    $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999))
+                }
+            }
+        }
+        const summary = await ClickStat.find(query);
+        // console.log('After $match stage:', ISsummary);
+
+        // const summary = await ClickStat.aggregate([
+        //     { $match: query },
+        //     {
+        //         $group: {
+        //             _id: null,
+        //             totalClicks: { $sum: 1 },
+        //             totalConversions: { $sum: { $cond: ['$converted', 1, 0] } },
+        //             totalRevenue: { $sum: '$revenue' }
+        //         }
+        //     },
+        //     {
+        //         $project: {
+        //             _id: 0,
+        //             totalClicks: 1,
+        //             totalConversions: 1,
+        //             totalRevenue: 1
+        //         }
+        //     }
+        // ]);
+        if(summary) {
+            return res.json({ 
+                totalClicks: summary.length,
+                totalConversions: summary.filter((el)=>el.converted === true).length,
+                totalRevenue: summary
+                .filter(el => el.converted === true) // Filter for converted clicks
+                .reduce((acc, el) => acc + el.revenue, 0) // Sum the revenue
+            })
+        } else {
+            return res.json({ totalClicks: 0, totalConversions: 0, totalRevenue: 0 });
+        }
+        
     } catch (error) {
         console.error('Error retrieving click summary:', error);
         res.status(500).json({ message: error.message });
@@ -158,13 +213,27 @@ exports.getDailyStats = async (req, res) => {
         const { startDate, endDate, page = 1, limit = 10 } = req.query;
         const skip = (page - 1) * limit;
 
-        const query = {
-            timestamp: { 
-                $gte: new Date(startDate), 
-                $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999))
-            }
-        };
+        let query = {};
 
+        if(req.user.role === "admin") {
+            query = {
+                timestamp: { 
+                    $gte: new Date(startDate), 
+                    $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999))
+                }
+            }
+        } else {
+            query = {
+                $or: [
+                    { userId: req.user.id },
+                ],
+                timestamp: { 
+                    $gte: new Date(startDate), 
+                    $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999))
+                }
+            }
+        }
+        await ClickStat.find(query);
         const [stats, totalItems] = await Promise.all([
             ClickStat.aggregate([
                 { $match: query },
@@ -238,13 +307,27 @@ exports.getFunnelsStats = async (req, res) => {
         const { startDate, endDate, page = 1, limit = 10 } = req.query;
         const skip = (page - 1) * limit;
 
-        const query = {
-            timestamp: { 
-                $gte: new Date(startDate), 
-                $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999))
-            }
-        };
+        let query = {};
 
+        if(req.user.role === "admin") {
+            query = {
+                timestamp: { 
+                    $gte: new Date(startDate), 
+                    $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999))
+                }
+            }
+        } else {
+            query = {
+                $or: [
+                    { userId: req.user.id },
+                ],
+                timestamp: { 
+                    $gte: new Date(startDate), 
+                    $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999))
+                }
+            }
+        }
+        await ClickStat.find(query);
         const [stats, totalItems] = await Promise.all([
             ClickStat.aggregate([
                 { $match: query },

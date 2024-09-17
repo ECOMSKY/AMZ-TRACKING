@@ -5,7 +5,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function loadTrackingScripts() {
     console.log('Tracking loader script started');
-    fetch('/api/tracking-settings')
+    fetch('/api/tracking-settings',{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }})
         .then(response => response.json())
         .then(settings => {
             console.log('Tracking settings:', settings);
@@ -49,7 +53,11 @@ function loadTrackingScripts() {
 
 function loadActiveProducts() {
     console.log('Loading active products');
-    fetch('/api/active-products')
+    fetch('/api/active-products',{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }})
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -134,7 +142,8 @@ async function redirectToAmazon(asin, marketplace) {
         const clickResponse = await fetch('/api/click', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({ asin, timestamp, marketplace, gclid }),
         });
@@ -178,7 +187,11 @@ window.redirectToAmazon = async function(asin, marketplace, gclid) {
 
 async function getAffiliateTag() {
     try {
-        const response = await fetch('/api/affiliate-tag');
+        const response = await fetch('/api/affiliate-tag',{
+            headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }});
         const data = await response.json();
         return data.affiliateTag;
     } catch (error) {

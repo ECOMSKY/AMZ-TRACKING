@@ -12,7 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function loadAPISettings() {
     showLoader();
-    fetch('/api/api-settings')
+    fetch('/api/api-settings',{
+        headers: {
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+    }})
         .then(response => response.json())
         .then(settings => {
             hideLoader();
@@ -39,6 +43,7 @@ function saveAPISettings() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify(settings),
     })
