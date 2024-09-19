@@ -75,8 +75,8 @@ router.get('/funnels',auth.UserMiddleware, funnelController.getAllFunnels);
 router.post('/funnels',auth.UserMiddleware, funnelController.createFunnel);
 router.put('/funnels/:id',auth.UserMiddleware, funnelController.updateFunnel);
 router.delete('/funnels/:id',auth.UserMiddleware, funnelController.deleteFunnel);
-router.get('/funnels/:id/products',auth.UserMiddleware, funnelController.getFunnelProducts);
-router.get('/funnels/:id', funnelController.getFunnel);
+router.get('/funnels/:id/products', funnelController.getFunnelProducts);
+router.get('/funnels/:id',auth.UserMiddleware, funnelController.getFunnel);
 router.post('/funnels/:id/products',auth.UserMiddleware, funnelController.addProductsToFunnel);
 router.post('/save-funnel-products',auth.UserMiddleware, funnelController.saveFunnelProducts);
 
