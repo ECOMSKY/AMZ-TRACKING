@@ -39,11 +39,11 @@ router.get('/affiliate-tag', (req, res) => {
 
 // Design
 router.post('/design-settings',auth.UserMiddleware, designController.saveDesignSettings);
-router.get('/design-settings/:funnelId',auth.UserMiddleware, designController.getDesignSettings);
+router.get('/design-settings/:funnelId', designController.getDesignSettings);
 
 // Tracking
 // Dans api.js, ajoutez ces lignes :
-router.get('/tracking-settings/:funnelId',auth.UserMiddleware, trackingController.getTrackingSettings);
+router.get('/tracking-settings/:funnelId', trackingController.getTrackingSettings);
 router.post('/tracking-settings/:funnelId',auth.UserMiddleware, trackingController.saveTrackingSettings);
 
 // API
@@ -76,7 +76,7 @@ router.post('/funnels',auth.UserMiddleware, funnelController.createFunnel);
 router.put('/funnels/:id',auth.UserMiddleware, funnelController.updateFunnel);
 router.delete('/funnels/:id',auth.UserMiddleware, funnelController.deleteFunnel);
 router.get('/funnels/:id/products',auth.UserMiddleware, funnelController.getFunnelProducts);
-router.get('/funnels/:id',auth.UserMiddleware, funnelController.getFunnel);
+router.get('/funnels/:id', funnelController.getFunnel);
 router.post('/funnels/:id/products',auth.UserMiddleware, funnelController.addProductsToFunnel);
 router.post('/save-funnel-products',auth.UserMiddleware, funnelController.saveFunnelProducts);
 
