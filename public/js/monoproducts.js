@@ -53,7 +53,7 @@ function addMonoProduct(formData) {
     method: 'POST',
     headers: {
       'Authorization' : `Bearer ${localStorage.getItem('token')}`,
-      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/json'
   },
     body: formData
   })
@@ -185,7 +185,7 @@ function updateMonoProduct(id) {
       method: 'PUT',
       headers: {
         'Authorization' : `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/json'
     },
       body: JSON.stringify(productData),
   })

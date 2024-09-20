@@ -49,7 +49,7 @@ exports.createProduct = [
 
             // Définir le type de produit par défaut à 'multi' si non spécifié
             productData.productType = productData.productType || 'multi';
-
+            productData.userId = req.user.id;
             // Conversion des champs numériques
             productData.score = Number(productData.score);
             productData.rank = Number(productData.rank);

@@ -4,7 +4,7 @@ const MonoProductSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users', // assuming your users collection is named 'User'
-        required: true
+        required: false
     },
     asin: { type: String, required: true },
     marketplace: { type: String, required: true },

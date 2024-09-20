@@ -30,7 +30,7 @@ function addProduct(formData) {
         method: 'POST',
         headers: {
             'Authorization' : `Bearer ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/json'
         },
         body: formData
     })
@@ -107,7 +107,7 @@ window.editProduct = function(id) {
     fetch(`/api/products/${id}`,{
         headers: {
         'Authorization' : `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/json'
     }})
         .then(response => {
             if (!response.ok) {

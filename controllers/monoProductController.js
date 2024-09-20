@@ -36,6 +36,7 @@ exports.createMonoProduct = [
         console.log('Received mono product data:', req.body);
         try {
             const productData = {
+                userId : req.user.id,
                 asin: req.body.asin,
                 marketplace: req.body.marketplace,
                 logoText: req.body['logo-text'],

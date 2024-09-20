@@ -96,9 +96,9 @@ exports.getFunnelProducts = async (req, res) => {
 
         let products;
         if (funnel.templateType === 'Mono Product') {
-            products = await MonoProduct.find({ _id: { $in: funnel.products } });
+            products = await MonoProduct.find({ userId: funnel.userId });
         } else {
-            products = await Product.find({ _id: { $in: funnel.products } });
+            products = await Product.find({ userId: funnel.userId });
         }
 
         console.log('Products found:', products);
