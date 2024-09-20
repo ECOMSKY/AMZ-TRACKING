@@ -36,7 +36,7 @@ exports.createFunnel = async (req, res) => {
         try {
             const newFunnel = await funnel.save();
             console.log('Funnel saved successfully:', newFunnel);
-            addDomainToNginx(req.body.customDomain);
+            // addDomainToNginx(req.body.customDomain);
             res.status(201).json(newFunnel);
         } catch (error) {
             console.error('Error creating funnel:', error);
