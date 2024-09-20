@@ -16,10 +16,14 @@ const upload = multer({ storage: storage });
 
 exports.getAllMonoProducts = async (req, res) => {
     try {
-        console.log('Fetching all mono products');
-        const monoProducts = await MonoProduct.find();
-        console.log(`Found ${monoProducts.length} mono products`);
-        res.json(monoProducts);
+        if(req.user.role === "admin") {
+            const monoProducts = await MonoProduct.find();
+            return res.json(monoProducts);
+        } else {
+            const monoProducts = await MonoProduct.find({userId : req.user.id});
+            return res.json(monoProducts);
+        }
+
     } catch (error) {
         console.error('Error fetching mono products:', error);
         res.status(500).json({ message: error.message });

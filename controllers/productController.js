@@ -16,8 +16,14 @@ const upload = multer({ storage: storage });
 
 exports.getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find().sort('rank');
-        res.json(products);
+        if(req.user.role === "admin") {
+            const products = await Product.find().sort('rank');
+            return res.json(products);
+        } else {
+            const products = await Product.find({userId : req.user.id}).sort('rank');
+            return res.json(products);
+        }
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
