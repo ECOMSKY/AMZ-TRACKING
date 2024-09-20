@@ -25,27 +25,31 @@ const addDomainToNginx = (domain) => {
     }
   `;
 
-  // Write the configuration file to Nginx sites-available directory
-  const filePath = `/etc/nginx/sites-available/${domain}`;
-  fs.writeFileSync(filePath, nginxConfig);
-
-  // Create a symbolic link to sites-enabled
-  exec(`ln -s /etc/nginx/sites-available/${domain} /etc/nginx/sites-enabled/`, (err) => {
+  // Write the configuration file with sudo permissions
+  exec(`echo "${nginxConfig}" | sudo tee /etc/nginx/sites-available/${domain}`, (err) => {
     if (err) {
-      console.error(`Error creating symlink for ${domain}:`, err);
+      console.error(`Error writing Nginx config for ${domain}:`, err);
       return;
     }
 
-    // Reload Nginx after the new domain config
-    exec('nginx -t && systemctl reload nginx', (reloadErr) => {
-      if (reloadErr) {
-        console.error(`Error reloading Nginx after adding ${domain}:`, reloadErr);
-      } else {
-        console.log(`Domain ${domain} added and Nginx reloaded successfully.`);
-
-        // Generate SSL using Certbot
-        generateSSL(domain);
+    // Create a symbolic link to sites-enabled
+    exec(`sudo ln -s /etc/nginx/sites-available/${domain} /etc/nginx/sites-enabled/`, (symlinkErr) => {
+      if (symlinkErr) {
+        console.error(`Error creating symlink for ${domain}:`, symlinkErr);
+        return;
       }
+
+      // Reload Nginx after the new domain config
+      exec('sudo nginx -t && sudo systemctl reload nginx', (reloadErr) => {
+        if (reloadErr) {
+          console.error(`Error reloading Nginx after adding ${domain}:`, reloadErr);
+        } else {
+          console.log(`Domain ${domain} added and Nginx reloaded successfully.`);
+
+          // Generate SSL using Certbot
+          generateSSL(domain);
+        }
+      });
     });
   });
 };
