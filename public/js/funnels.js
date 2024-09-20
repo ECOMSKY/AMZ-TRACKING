@@ -52,9 +52,13 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(newFunnel => {
-            console.log('Funnel created successfully:', newFunnel);
-            loadFunnels();
-            createFunnelForm.reset();
+            if(newFunnel.status === false) {
+                alert(newFunnel.message)
+            } else {
+                loadFunnels();
+                createFunnelForm.reset();
+            }
+
         })
         .catch(error => {
             console.error('Error creating funnel:', error);

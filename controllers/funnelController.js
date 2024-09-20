@@ -1,6 +1,8 @@
 const Funnel = require('../models/Funnel');
 const Product = require('../models/Product');
 const MonoProduct = require('../models/MonoProduct');
+const { addDomainToNginx } = require('../utils/utils');
+const isValidDomain = require('@arcblock/is-valid-domain');
 
 exports.getAllFunnels = async (req, res) => {
     try {
@@ -12,27 +14,38 @@ exports.getAllFunnels = async (req, res) => {
 };
 
 exports.createFunnel = async (req, res) => {
+
     console.log('Received request to create funnel:', req.body);
-
-    if (req.body.templateType && !req.body.templateType.includes('Product')) {
-        req.body.templateType = req.body.templateType.charAt(0).toUpperCase() + req.body.templateType.slice(1) + " Product";
+    const isValid = isValidDomain(req.body.customDomain,{subdomain: true});
+    if(isValid) {
+        const isDomainExits = await Funnel.findOne({customDomain : req.body.customDomain});
+        if(isDomainExits) {
+            return res.send({status : false,message :'Domain already exist'});
+        }
+        if (req.body.templateType && !req.body.templateType.includes('Product')) {
+            req.body.templateType = req.body.templateType.charAt(0).toUpperCase() + req.body.templateType.slice(1) + " Product";
+        }
+    
+        const funnel = new Funnel({
+            ...req.body,
+            googleTagManagerId: req.body.googleTagManagerId || '',
+            googleAdsId: req.body.googleAdsId || '',
+            googleAdsConversionLabel: req.body.googleAdsConversionLabel || ''
+        });
+    
+        try {
+            const newFunnel = await funnel.save();
+            console.log('Funnel saved successfully:', newFunnel);
+            addDomainToNginx(req.body.customDomain);
+            res.status(201).json(newFunnel);
+        } catch (error) {
+            console.error('Error creating funnel:', error);
+            res.status(400).json({ message: error.message });
+        }
+    } else {
+        return res.send({status : false,message :'Domain is not valid'});
     }
 
-    const funnel = new Funnel({
-        ...req.body,
-        googleTagManagerId: req.body.googleTagManagerId || '',
-        googleAdsId: req.body.googleAdsId || '',
-        googleAdsConversionLabel: req.body.googleAdsConversionLabel || ''
-    });
-
-    try {
-        const newFunnel = await funnel.save();
-        console.log('Funnel saved successfully:', newFunnel);
-        res.status(201).json(newFunnel);
-    } catch (error) {
-        console.error('Error creating funnel:', error);
-        res.status(400).json({ message: error.message });
-    }
 };
 
 exports.getFunnel = async (req, res) => {

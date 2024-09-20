@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@arcblock/is-valid-domain": "^1.0.5",
     "amazon-paapi": "^1.0.7",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
