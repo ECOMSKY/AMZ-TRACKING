@@ -197,11 +197,7 @@ async function redirectToAmazon(asin, marketplace) {
     }
 
     try {
-        const clickResponse = await fetch('/api/click',{
-            headers: {
-            'Authorization' : `Bearer ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
-        }}, {
+        const clickResponse = await fetch('/api/click', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
