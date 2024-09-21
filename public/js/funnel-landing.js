@@ -183,13 +183,19 @@ function attachViewButtonListeners() {
     });
 }
 
+// Ajoutez cette fonction si elle n'existe pas déjà
+function getUserIdFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('userId');
+}
+
 async function redirectToAmazon(asin, marketplace) {
     console.log(`Redirecting to Amazon for ASIN: ${asin} in marketplace: ${marketplace}`);
     
     const timestamp = Date.now();
     const gclid = getGclid();
     const funnelId = getFunnelIdFromUrl();
-
+    const userId = getUserIdFromUrl() ;
     if (!funnelId) {
         console.error('Cannot redirect: Funnel ID is missing');
         alert('Une erreur s\'est produite. Funnel ID manquant.');
@@ -202,7 +208,7 @@ async function redirectToAmazon(asin, marketplace) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ asin, timestamp, marketplace, gclid, funnelId }),
+            body: JSON.stringify({ asin, timestamp, marketplace, gclid, funnelId,userId }),
         });
         if (!clickResponse.ok) {
             throw new Error('Network response was not ok');
@@ -249,6 +255,8 @@ function getFunnelIdFromUrl() {
     }
     return funnelId;
 }
+
+
 
 function getGclid() {
     const urlParams = new URLSearchParams(window.location.search);
