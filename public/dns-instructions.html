@@ -11,18 +11,38 @@
         <h1>How to Configure Your Custom Domain</h1>
         <ol>
             <li>Log in to your domain registrar's website.</li>
-            <li>Navigate to the DNS management section.</li>
-            <li>Add a new CNAME record with the following details:
+            <li>Navigate to the <strong>DNS Management</strong> or <strong>DNS Settings</strong> section.</li>
+            <li>
+                Add a new <strong>CNAME</strong> record with the following details:
                 <ul>
-                    <li>Name/Host: www</li>
-                    <li>Value/Points to: [Your App's Domain] (e.g., your-app.herokuapp.com)</li>
-                    <li>TTL: 3600 (or 1 hour)</li>
+                    <li><strong>Name/Host:</strong> www (This is the subdomain you'll be pointing to your funnel. If you want to point the root domain, use <code>@</code> instead.)</li>
+                    <li><strong>Value/Points to:</strong> 13.36.20.246 (This is your server's IP address.)</li>
+                    <li><strong>TTL:</strong> 3600 (or 1 hour) – You can leave this as the default or lower it for quicker propagation.</li>
                 </ul>
             </li>
             <li>Save your changes.</li>
-            <li>Wait for DNS propagation (can take up to 48 hours).</li>
+            <li>For enhanced security and performance, it's recommended to connect your domain through <strong>Cloudflare</strong>:
+                <ol>
+                    <li>Sign up for a free Cloudflare account at <a href="https://www.cloudflare.com" target="_blank">cloudflare.com</a>.</li>
+                    <li>Add your domain to Cloudflare by following the on-screen instructions.</li>
+                    <li>Once your domain is added, navigate to the <strong>DNS</strong> settings within Cloudflare.</li>
+                    <li>Add a <strong>CNAME</strong> record with the following details:
+                        <ul>
+                            <li><strong>Name/Host:</strong> www</li>
+                            <li><strong>Value/Points to:</strong> yourdomain.com (or the server's IP).</li>
+                            <li>Ensure that Cloudflare's proxy is enabled (orange cloud icon) for SSL and CDN benefits.</li>
+                        </ul>
+                    </li>
+                    <li>Update the nameservers for your domain registrar to the ones provided by Cloudflare (this step will appear after adding your domain).</li>
+                    <li>Wait for DNS propagation (can take up to 48 hours).</li>
+                </ol>
+            </li>
+            <li>Ensure SSL is enabled in Cloudflare to secure your site. For most setups, you can use <strong>Flexible SSL</strong> (no server-side certificate needed), but <strong>Full SSL</strong> is recommended if your server has a valid certificate.</li>
+            <li>Once DNS propagation is complete, your custom domain will point to your funnel landing page.</li>
+            <li>Clear your browser cache and verify your domain is working correctly by typing your custom domain in the browser.</li>
         </ol>
-        <p>Once configured, your custom domain will point to your funnel landing page.</p>
+        <p><strong>Note:</strong> DNS changes can take up to 48 hours to fully propagate across the internet, but typically this process is much faster.</p>
     </div>
+    
 </body>
 </html>
