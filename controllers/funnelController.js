@@ -119,7 +119,6 @@ exports.getFunnelProducts = async (req, res) => {
 
 
 
-
 exports.updateFunnelProducts = async (req, res) => {
     try {
         const funnel = await Funnel.findById(req.params.id);
