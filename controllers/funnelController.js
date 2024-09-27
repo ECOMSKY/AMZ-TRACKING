@@ -83,21 +83,27 @@ exports.deleteFunnel = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
 exports.getFunnelProducts = async (req, res) => {
     try {
         // Extract the full domain including path from the request
-        const fullDomain = `${req.hostname}${req.originalUrl}`;
+        let fullDomain = `${req.hostname}${req.originalUrl}`;
+
+        // Normalize the domain: Remove 'www.' if present
+        if (req.hostname.startsWith('www.')) {
+            fullDomain = `${req.hostname.replace(/^www\./, '')}${req.originalUrl}`;
+        }
+
         console.log('Request received for domain:', fullDomain);
 
-        // Search for a matching funnel based on the full domain
+        // Search for a matching funnel based on the normalized full domain
         const funnel = await Funnel.findOne({ customDomain: fullDomain });
-        
+
         // If no matching funnel is found, deny access
         if (!funnel) {
             console.log('Access denied for domain:', fullDomain);
             return res.status(403).json({ message: 'Access denied' });
         }
+
         console.log('Funnel found:', funnel);
 
         // Retrieve products based on the funnel template type
@@ -115,6 +121,7 @@ exports.getFunnelProducts = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 
 
