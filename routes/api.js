@@ -60,7 +60,7 @@ router.post('/login', userController.login);
 router.post('/signup', userController.signup);
 
 // Protected routes
-router.get('/user-profile', auth.UserMiddleware, userController.getUserProfile);
+router.get('/user/user-profile', auth.UserMiddleware, userController.getUserProfile);
 router.post('/update-profile', auth.UserMiddleware, userController.updateProfile);
 
 // Rules routes

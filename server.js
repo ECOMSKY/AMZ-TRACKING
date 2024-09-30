@@ -8,9 +8,9 @@ const productController = require('./controllers/productController');
 const Funnel = require('./models/Funnel');
 const monopPoductController = require('./controllers/monoProductController');
 const MonoProduct = require('./models/MonoProduct');
-
+const cors = require('cors');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(async () => {
@@ -25,6 +25,7 @@ mongoose.connect(process.env.MONGODB_URI)
   .catch(err => console.error('Could not connect to MongoDB:', err));
 
 // Middleware
+app.use(cors())
 app.use(express.json());
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
@@ -62,7 +63,7 @@ app.use(async (req, res, next) => {
 });
 
 // Routes
-app.use('/api', apiRoutes);
+app.use('/v1', apiRoutes);
 
 const pages = ['', 'login', 'signup', 'dashboard', 'design', 'products', 'tracking', 'api', 'sync', 'funnels', 'profile', 'monoproducts', 'mono-product'];
 
